@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html>
+<title>Assesment Tool</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn5.vectorstock.com/i/1000x1000/78/49/wheat-oats-logo-vector-22577849.jpg" />
+
+
+<style>
+
+.footer {
+  position: fixed;
+  height: 30px;
+  color:white;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+  background-color: grey;
+  color: white;
+  text-align: center;
+}
+
+body {
+    margin-bottom:50px;
+}
+
+
+
+.tableCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.shadowBox {
+  box-shadow: 0px 25px 30px rgba(0, 0, 0, 0.3);
+}
+
+</style>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Assessment Tool</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/137409052/original/d472c30361632da1c8d8fa780f572807d78abd9f/cartoon-profile-picture-or-avatar.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      Welcome, <strong><p id = "usernamehere"></p><p id = "useridhere"></p></strong>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a id = "subjects" onclick="setMeBlue(event)"  class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-book fa-fw"></i>  Subjects</a>
+    <a id = "collections" onclick="setMeBlue(event)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-th fa-fw"></i>   Question Collection</a> 
+    <a id = "tests" onclick="setMeBlue(event)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-edit fa-fw"></i>  Tests</a>
+    <a id = "profile" onclick="setMeBlue(event)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user-circle fa-fw"></i>  Profile</a>
+    <a href="/logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sign-out"></i>   Logout  </a>
+  </div>
+</nav>
+
+
+
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+
+
+<!-- !PAGE CONTENT! -->
+<div  class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <b><h5 id="headerhere">Home</b></h5>
+  </header>
+
+
+
+
+
+
+<div id="hidden"  hidden></div>
+<div id="staticContent"  style="margin:10px"></div>
+<div id="appendhere"  class="tableCenter w3-row-padding w3-margin-bottom w3-responsive"></div>
+<datalist id="subjectCodes"></datalist>
+
+
+<div class="container">
+<!-- Modal -->
+  <div class="modal fade" id="myModal" >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" style="color:red;font-size:40px;" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Question</h4>
+        </div>
+        <div class="modal-body">
+					<div  id="questionForm"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+		<!-- Modal -->
+		<div class="modal fade" id="createTestModal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">New Test</h4> </div>
+					<div class="modal-body">
+						<div>
+							<div class="form-group">
+								<label for="testName">Test name:</label>
+								<input type="text" class="form-control" id="testName" placeholder="Enter test name" name="testName">
+              </div>
+              <div class="form-group">
+                  <label for="collectionCode">Select collection code:</label>
+                  <select class="form-control" id="collectionCode" onclick="fillSubjectCode();">
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="subjectCode">Subject code:</label>
+                  <input type="text" class="form-control" id="subjectCode" name="subjectCode" disabled>
+              </div>
+              <div class="form-group">
+								<label for="totalQuestions">Total number of questions:</label>
+								<input type="number" class="form-control" id="totalQuestions" onclick="setMaxQuestion()" placeholder="Enter total number of questions" name="totalQuestions">
+              </div>
+              <div class="form-group">
+                  <label for="marksFcaq">Marks for correct answers:</label>
+                  <input type="number" list="m1" class="form-control" id="marksFcaq" value="1" name="marksFcaq">
+                  <datalist id="m1">
+                  <option value="1">
+                  <option value="2">
+                  <option value="3">
+                  <option value="4">
+                  </datalist>
+              </div>
+              <div class="form-group">
+                  <label for="marksFwap">Marks for wrong answers:</label>
+                  <input type="number" list="m2" class="form-control" id="marksFwap" value="0" name="marksFwap">
+                  <datalist id="m2">
+                  <option value="0">
+                  <option value="-1">
+                  <option value="-2">
+                  <option value="-3">
+                  </datalist>
+              </div>
+              <div class="form-group">
+								<label for="totalMarks">Total marks:</label>
+								<input type="number" class="form-control" id="totalMarks" onclick="setTotalMarks()" placeholder="Total marks" name="totalMarks">
+              </div>
+              <div class="form-group">
+								<label for="startDate">Start date:</label>
+								<input type="date" class="form-control" id="startDate" oninput="validateDate()"  name="startDate">
+              </div>
+              <div class="form-group">
+								<label for="startTime">Start time:</label>
+								<input type="time" class="form-control" id="startTime" oninput="validateStatTime()" name="startTime">
+              </div>
+              <div class="form-group">
+								<label for="endTime">End time:</label>
+								<input type="time" class="form-control" id="endTime" oninput="validateEndTime()" name="endTime">
+              </div>
+							<button  class="btn btn-success" onclick="addTest()">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+  <br>
+
+
+
+  <!-- End page content -->
+</div>
+  <!-- Footer -->
+  <footer class="footer">
+      <div class="container">
+        <span class="text-muted" style="color:white">Made with love. © 2020</span>
+      </div>
+  </footer>
+<script>
+
+
+
+
+
+
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+
+
+
+window.onload = getTeacherDetails();
+
+
+
+var subjectList = [];
+var studentList = [];
+var collectionList = [];
+var questionList = [];
+var setUsername = document.getElementById("usernamehere").innerHTML;
+var setUserId = document.getElementById("useridhere").innerHTML;
+var setHeader = document.getElementById("headerhere").innerHTML;
+var staticContent = document.getElementById("staticContent");
+var contentPlace = document.getElementById("appendhere");
+var tableDiv = document.getElementById("tableDiv");
+var menu = ["subjects", "collections", "tests", "profile"];
+
+
+
+
+// teacher details....................................................................................................................
+
+function getTeacherDetails(){
+	
+	$.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/teacher/details",
+        success: function(s) {
+
+          document.getElementById("usernamehere").innerHTML = s.name;
+          displaySubjects();
+          console.log(s);
+
+        }
+      });
+	
+	  getSubjects();
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//teacher subjects menu....................................................................................................................
+
+
+
+
+function getSubjects(){
+
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/teacher/subject/list",
+        success: function(s) {
+          subjectList = s;
+          displaySubjects();
+          console.log(s);
+          
+
+        }
+      });
+      
+      
+      
+      document.getElementById("staticContent").innerHTML =
+    	  '<div class="form-inline" style="margin-left:5px;"> '+
+    	  '<div class="form-group">'+
+    	  '<label for="newSubject" style="margin-left:5px;" >Subject Name:</label>'+
+    	  '<input type="text" onkeypress="alphaNumOnly(event)" onpaste="return false;" class="form-control" id="newSubject" style="margin-right:10px" >'+
+    	  '</div>'+
+    	  '<button onclick="addSubject()" class="btn btn-default" style="margin-left:10px;" ><i class="fa fa-plus" ></i> Add</button></div>';
+
+
+  }
+  
+  
+function addSubject(){
+	
+	$.ajax({
+        type: "PUT",
+        dataType: "json",
+        url: "/teacher/add/subject/" + document.getElementById("newSubject").value,
+        success: function(s) {
+          console.log(s);
+          getSubjects();
+        }
+      });
+	
+}
+
+
+
+function displaySubjects(){
+
+	
+	contentPlace.innerHTML = "";	
+	for (var i = 0; i < subjectList.length; i++) {
+
+	  contentPlace.innerHTML += 
+		  				  ' <div  class="w3-quarter w3-hover-sepia "  > ' +
+	                      '  <div class="w3-container w3-padding-16"  style="margin-top: 16px;background-color: lightblue;"> ' +
+	                      ' <div class="w3-right"><i class="fa fa-trash" style="color:red" onclick="deleteSubject(' + "'" + subjectList[i].id  + "'" + ')" ></i></div> ' +
+	                      '  <i class="fa fa-book" ></i>  ' +
+	                      '  <h4 onclick="getStudents(' + "'"  + subjectList[i].id + "'" + ')"> ' + subjectList[i].name + '</h4> ' + 
+	                      ' </div></div> ';
+
+	            
+	  document.getElementById("subjectCodes").innerHTML  += '<option value="' +  subjectList[i].id  + '">' 
+	  }
+	  
+	  w3-close();
+
+
+	}
+
+
+
+
+
+function getStudents(id){
+
+	
+	document.getElementById("headerhere").innerHTML = "Students List For Subject_Id : " + id ;
+	document.getElementById("staticContent").innerHTML = "";
+	console.log(id);
+	
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/teacher/subject/" +  id +   "/student/list",
+				success: function(s) {
+					
+					console.log(s);
+          			studentList = s.studentsList;
+          			initTable(id);
+					
+
+				}
+			});
+	}
+
+
+
+
+
+function initTable(id){
+	
+	contentPlace.innerHTML =   '<div id="tableDiv"  class="tableCenter"><div id="resultArray" class="table-responsive" ></div></div>';
+
+
+    var resultArray = studentList;
+    
+    for (var i = 0; i < resultArray.length; i++) {
+
+    	resultArray[i].Remove = '<button class="btn btn-danger btn-sm" style="margin:5px" onclick="removeStudent(' + "'" + id + "','" +  resultArray[i].id + "'" + ')">Remove</button>';
+    	
+	}
+    
+		var noOfResult = resultArray.length;
+
+		if(noOfResult > 0) {
+
+			// CREATE DYNAMIC TABLE.
+			var table = document.createElement("table");
+			//table.className = "w3-table-all w3-card-4 w3-hoverable ";
+			table.setAttribute('id', 'myTable');
+			table.style.width = '100%';
+			table.setAttribute('border', '1');
+			table.setAttribute('cellspacing', '0');
+			table.setAttribute('cellpadding', '5');
+
+			// retrieve column header
+
+			var col = []; // define an empty array
+			for (var i = 0; i < noOfResult; i++) {
+				for (var key in resultArray[i]) {
+					if (col.indexOf(key) === -1) {
+						col.push(key);
+					}
+				}
+			}
+
+
+
+			// CREATE TABLE HEAD .
+			var tHead = document.createElement("thead");
+
+
+
+			// CREATE ROW FOR TABLE HEAD .
+			var hRow = document.createElement("tr");
+
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < col.length; i++) {
+				    var dynamicSize = 300*(i+1);
+				    document.getElementById("tableDiv").style.maxWidth = dynamicSize + "px" ;
+					var th = document.createElement("th");
+					th.innerHTML = col[i] + "<i class='fa fa-sort' style='font-size:12px'></i>";
+					var x = i+1;
+					th.setAttribute("onclick", "w3.sortHTML('#myTable', '.item', 'td:nth-child(" + x + ")')");
+					th.setAttribute("style", "cursor:pointer");
+					hRow.appendChild(th);
+			}
+			tHead.appendChild(hRow);
+			table.appendChild(tHead);
+
+
+
+
+			// CREATE TABLE BODY .
+			var tBody = document.createElement("tbody");
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < noOfResult; i++) {
+
+					var bRow = document.createElement("tr"); // CREATE ROW FOR EACH RECORD .
+					bRow.setAttribute("class","item");
+
+					for (var j = 0; j < col.length; j++) {
+						var td = document.createElement("td");
+						td.innerHTML = resultArray[i][col[j]];
+						bRow.appendChild(td);
+					}
+					tBody.appendChild(bRow)
+
+			}
+			table.appendChild(tBody);
+
+
+			// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+			var divContainer = document.getElementById("tableDiv");
+			divContainer.innerHTML = "";
+			divContainer.appendChild(table);
+
+		}
+		
+    w3_close();
+
+	}
+	
+	
+	
+	
+function deleteSubject(id){
+	
+	var r = confirm("Are you sure?");
+	if ( r ) {
+		
+		$.ajax({
+			type: "DELETE",
+			dataType: "json",
+			url: "/teacher/delete/subject/" +  id,
+			success: function(s) {
+	  			getSubjects();
+
+			}
+		});
+	  }
+}
+
+
+
+function removeStudent(subject, student){
+	
+	var r = confirm("Are you sure?");
+	
+  if (r) {
+	
+	$.ajax({
+		type: "DELETE",
+		dataType: "json",
+		url: "/teacher/delete/" + subject + "/" +  student,
+		success: function(s) {
+			getStudents(subject);
+		}
+	});
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//teacher collection menu....................................................................................................................
+
+
+
+function getCollections(){
+	 
+	 $.ajax({
+	        type: "GET",
+	        dataType: "json",
+	        url: "/teacher/collection/list",
+	        success: function(s) {
+	          collectionList = s;
+	          console.log(s);
+	          
+	          for (var i = 0; i < collectionList.length; i++) {
+
+		    	  contentPlace.innerHTML += ' <div  class="w3-quarter w3-hover-sepia"  > ' +
+		    	                      ' <div class="w3-container w3-padding-16"  style="margin-top: 16px;background-color: lightblue;"> ' +
+		    	                      ' <div class="w3-right"><i class="fa fa-trash" style="color:red" onclick="deleteCollection(' + "'" + collectionList[i].collectionCode  + "'" + ')" ></i></div> ' +
+		    	                      ' <i class="fa fa-clipboard-list" ></i>  ' +
+		    	                      ' <h4 onclick="getQuestions(' + "'"  + collectionList[i].collectionCode + "'" + ')"> ' + collectionList[i].collectionName + '</h4> ' + 
+		    	                      ' </div></div> ';
+
+		    	  }
+
+	        }
+	      });
+	      
+	      document.getElementById("staticContent").innerHTML =
+	    	  '<div class="form-inline" style="margin-left:5px;"> '+
+	    	  '<div class="form-group">'+
+	    	  '<label for="subjectCode" style="margin-left:5px;" >Subject Code:</label>'+
+	    	  '<input type="text" list="subjectCodes" class="form-control" id="subjectCode" style="margin-left:10px;" >'+
+	    	  '</div>'+
+	    	  '<div class="form-group">'+
+	    	  '<label for="newCollection" style="margin-left:5px;" >Collection Name:</label>'+
+	    	  '<input type="text" class="form-control" id="newCollection" style="margin-left:10px;" >'+
+	    	  '</div>'+
+	    	  '<button onclick="addCollection()" class="btn btn-default" style="margin-left:10px;" ><i class="fa fa-plus" ></i> Add</button></div>';
+	  	  
+	      
+	    	  
+	      contentPlace.innerHTML = "";
+	      
+	      
+	    	  
+	      w3-close();
+	    	  
+}
+
+
+
+function addCollection(){
+	
+	console.log(document.getElementById("newCollection").value);
+	
+	var collection = {
+			
+			"subjectCode" : document.getElementById("subjectCode").value,
+			"collectionName" : document.getElementById("newCollection").value 
+			
+	};
+	
+	$.ajax({
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(collection),
+        dataType: "json",
+        url: "/teacher/add/collection",
+        success: function(s) {
+          console.log(s);
+          getCollections();
+        }
+      });
+	
+	
+	
+}
+
+
+
+
+
+function deleteCollection(collectionCode){
+	
+	var r = confirm("Are you sure?");
+
+	if ( r ) {
+	
+	$.ajax({
+        type: "DELETE",
+        dataType: "json",
+        url: "/teacher/delete/collection/" + collectionCode,
+        success: function(s) {
+          console.log(s);
+          getCollections();
+        }
+      });
+	
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//teacher question interface....................................................................................................................
+
+
+
+var opt = 0;
+var questionForm = document.getElementById("questionForm");
+
+
+
+function getQuestions(collectionCode){
+	
+	staticContent.innerHTML = 
+		'<button class="btn btn-info" data-toggle="modal" data-target="#myModal" onclick = "showQuestionForm()">+ add</button><br>';
+		
+	document.getElementById("headerhere").innerHTML = "Question List For Collection_Code : " + collectionCode ;
+	document.getElementById("hidden").innerHTML = collectionCode ;
+	
+	contentPlace.innerHTML = "";
+	
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/teacher/" + collectionCode + "/question/list",
+				success: function(s) {
+					console.log(s);
+					questionList = s;
+					
+					var str = "";
+					str =
+						'<div class="container"><div class="panel-group" id="accordion">';
+					    
+					for (var i = 0; i < questionList.length; i++) {
+						str += 
+							'<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'+
+					        '<a data-toggle="collapse" data-parent="#accordion" href="#collapse' + questionList[i].questionId + '"><strong>Question '+ i + ':  </strong> ' + questionList[i].questionString + '</a><i class="fa fa-trash pull-right" onclick="deleteQuestion(' + questionList[i].questionId + ')" style="color:red"></i></h4></div>' +
+					        '<div id="collapse' + questionList[i].questionId + '" class="panel-collapse collapse"><ul class="list-group">';
+													
+						choices = questionList[i].choices.split("_mjhzsgdf_");
+						for (var j = 0; j < choices.length; j++) {
+							if (choices[j] == questionList[i].answer ) {
+								str +=
+									'<li class="list-group-item" style="background-color:lightgreen"><strong>' + j + '.</strong> ' + choices[j] + '</li>';
+							}else{
+								str +=
+									'<li class="list-group-item"><strong>' + j + '.</strong> ' + choices[j] + '</li>';
+							}
+							if (j == choices.length - 1) {
+									str += '</ul></div></div>';
+							}
+						}
+						
+					}
+					str += '</div></div>';
+					
+					contentPlace.innerHTML = str;
+				}
+		});
+	}
+
+
+
+
+function deleteQuestion(questionId){
+	
+	
+	var r = confirm("Are you sure?");
+
+	if ( r ) {
+
+		 $.ajax({
+		        type: "DELETE",
+		        dataType: "json",
+		        url: "/teacher/delete/question/" + questionId,
+		        success: function(s) {
+		        	 console.log(s);
+			         $('#myModal').modal('hide');
+			         getQuestions(document.getElementById("hidden").innerHTML);
+		          
+		        }
+		      });
+	}
+}
+
+
+
+
+
+function showQuestionForm(){
+	
+questionForm.innerHTML =
+    '<div class="form-group">'+
+	'<label for="topic">Topic:</label>'+
+	'<input class="form-control" id="topic">'+
+    '<label for="question">Question:</label>'+
+    '<textarea class="form-control" rows="5" id="question"></textarea>'+
+    '</div><strong>Options :</strong>'+
+    '<div id="options"></div><br>'+
+    '<button class="btn btn-info pull-left" onclick="addOption()">+ option</button><hr>'+
+	'<button class="btn btn-success pull-right" onclick="saveQuestion()">Save</button><br><br>';
+
+}
+
+
+function addOption(){
+opt++;
+var d = document.createElement('div'); // is a node
+d.setAttribute("id", opt);
+d.setAttribute("class", "form-inline");
+d.innerHTML =
+	  '<hr><input type="radio" style="margin:5px"  id="radio' + opt + '" name="choice" value="">'+
+	  '<i class="fa fa-window-close pull-right" style="font-size:20px;margin:5px;color:red;"  id="a' + opt +'" onclick="detachS(event)"></i>'+
+	  '<textarea class="form-control"  style="margin:5px"  rows="2" cols="100%" id="choice' + opt + '" oninput="updateRadioValue(event)" ></textarea>';
+document.getElementById("options").appendChild(d);
+};
+
+
+function detachS(event){
+document.getElementById(event.target.id).parentElement.remove();
+}
+
+
+
+function updateRadioValue(event){
+document.getElementById(event.target.id.replace("choice","radio")).value =  document.getElementById(event.target.id).value;
+}
+
+
+
+function saveQuestion(){
+
+	var questionData = {};
+	questionData.topic = document.getElementById("topic").value;
+	questionData.questionString = document.getElementById("question").value;
+	var choice = document.getElementsByName('choice');
+	var listOfOptions = [];
+	for(i = 0; i < choice.length; i++) {
+		if(choice[i].checked){
+			questionData.answer = choice[i].value;
+		}
+		listOfOptions.push(choice[i].value);
+	 }
+	 questionData.choices = listOfOptions.join("_mjhzsgdf_");  //we cant use comma as seperator bcoz option string might contain comma and deserializing becomes erroneous
+	 questionData.collectionCode = document.getElementById("hidden").innerHTML;
+	 console.log(questionData);
+	 
+		
+		 $.ajax({
+		        type: "POST",
+		        contentType: "application/json",
+		        data: JSON.stringify(questionData),
+		        dataType: "json",
+		        url: "/teacher/add/question",
+		        success: function(s) {
+		        	console.log(s);
+			         $('#myModal').modal('hide');
+			         getQuestions(questionData.collectionCode);
+		          
+		        }
+		      });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//teacher Test interface....................................................................................................................
+
+var tests = [];
+
+function getTests(){
+	
+	console.log("got into test");
+	
+	staticContent.innerHTML = 
+		'<button type="button" class="btn btn-info" data-toggle="modal" onclick="showTestForm();" data-target="#createTestModal">Create Test</button>';
+	
+		$.ajax({
+	        type: "GET",
+	        dataType: "json",
+	        url: "/teacher/test/list",
+	        success: function(s) {
+	          tests = s;
+	          contentPlace.innerHTML = "";	
+	          
+	  			var str = "";
+				str =
+					'<div class="container"><div class="panel-group" id="accordion">';
+				    
+				for (var i = 0; i < s.length; i++) {
+					str += 
+						'<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'+
+				        '<a  data-toggle="collapse" data-parent="#accordion" href="#collapse' + s[i].testCode + '">' + s[i].testName + '</a><i id="'+  s[i].testCode  +'" class="fa fa-trash pull-right" onclick="deleteTest(event)" style="color:red"></i></h4></div>' +
+				        '<div id="collapse' + s[i].testCode + '" class="panel-collapse collapse">';
+				        
+					str +=
+						
+						'<div style="padding:10px" ><p>Collection Code : ' + s[i].collectionCode    + '</p>'+
+						'<p>Subject Code : ' + s[i].subjectCode    + '</p>'+
+						'<p>Total number of Question : ' + s[i].totalQuestions    + '</p>'+
+						'<p>Marks for correct answers : ' + s[i].marksFcaq    + '</p>'+
+						'<p>Marks for wrong answers : ' + s[i].marksFwap    + '</p>'+
+						'<p>Total marks : ' + s[i].totalMarks    + '</p>'+
+						'<p>Start date : ' + s[i].startDate    + '</p>'+
+						'<p>Satrt Time : ' + s[i].startTime    + '</p>'+
+						'<p>End Time : ' + s[i].endTime    + '</p>'+
+						'<p>Test Status : ' + s[i].testStatus    + '</p></div>'+
+						'</div></div>';
+				}
+				str += '</div></div>';
+				
+				contentPlace.innerHTML = str;
+
+	          console.log(s);
+
+	        }
+	      });
+	      
+		  w3-close();
+
+}
+
+
+
+
+
+
+
+var collectionListForTestForm = [];
+
+
+function showTestForm(){
+
+$.ajax({
+	        type: "GET",
+	        dataType: "json",
+	        url: "/teacher/collection/list",
+	        success: function(s) {
+            collectionListForTestForm = s;
+            	for(var i=0; i< s.length ; i++){
+           		 document.getElementById("collectionCode").innerHTML +=
+              			'<option value="'+  s[i].collectionCode +'">'+  s[i].collectionCode +'</option>';
+            	}
+	     	}
+});
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+ if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+
+today = yyyy+'-'+mm+'-'+dd;
+document.getElementById("startDate").setAttribute("min", today);
+
+}
+
+
+function fillSubjectCode(){
+if(document.getElementById("collectionCode").value==""){
+  alert("Please select collection code!!");
+  document.getElementById("collectionCode").focus();
+}else{
+  for(var i=0; i< collectionListForTestForm.length ; i++){
+    if(document.getElementById("collectionCode").value == collectionListForTestForm[i].collectionCode){
+      document.getElementById("subjectCode").value = collectionListForTestForm[i].subjectCode;
+      document.getElementById("subjectCode").placeholder = collectionListForTestForm[i].subjectCode;
+    }
+  }
+}
+}
+
+function setMaxQuestion(){
+if(document.getElementById("collectionCode").value==""){
+  alert("Please select collection code!!");
+  document.getElementById("collectionCode").focus();
+}else{
+  $.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/teacher/" + document.getElementById("collectionCode").value + "/question/list",
+				success: function(s) {
+         			 document.getElementById("totalQuestions").setAttribute('max', s.length);
+         			 document.getElementById("totalQuestions").setAttribute('value', s.length);
+				}
+	});
+}
+
+}
+
+
+function setTotalMarks(){
+	if(document.getElementById("totalQuestions").value==0){
+		  alert("Please enter total number of questions!!");
+		  document.getElementById("totalQuestions").focus();
+	}else if(document.getElementById("marksFcaq").value==0){
+		  alert("Please enter marks for selecting correct answer!!");
+		  document.getElementById("marksFcaq").focus();
+	}else{
+		document.getElementById("totalMarks").value = document.getElementById("totalQuestions").value * document.getElementById("marksFcaq").value;
+	}
+}
+
+
+
+
+function validateDate(){
+	
+	
+}
+
+function validateStatTime(){
+	
+	
+	
+}
+
+function validateEndTime(){
+	
+	
+	
+}
+
+
+function addTest(){
+	
+	var testInfo = {
+			
+				"testName":document.getElementById("testName").value,
+				"collectionCode":document.getElementById("collectionCode").value,
+				"subjectCode":document.getElementById("subjectCode").value,
+				"totalQuestions":document.getElementById("totalQuestions").value,
+				"marksFcaq":document.getElementById("marksFcaq").value,
+				"marksFwap":document.getElementById("marksFwap").value,
+				"totalMarks":document.getElementById("totalMarks").value,
+				"startDate":document.getElementById("startDate").value,
+				"startTime":document.getElementById("startTime").value + ":00",
+				"endTime":document.getElementById("endTime").value + ":00",
+				"testStatus": "pending"				
+				
+		};
+		
+		
+		$.ajax({
+	        type: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify(testInfo),
+	        dataType: "json",
+	        url: "/teacher/add/test",
+	        success: function(s) {
+	        	console.log(s);
+		         $('#createTestModal').modal('hide');
+	         	 getTests();   
+
+	        }
+	    });
+
+}
+
+
+
+function deleteTest(event){
+	
+	
+	var r = confirm("Are you sure?");
+
+	if ( r ) {
+	
+	 $.ajax({
+	        type: "DELETE",
+	        dataType: "json",
+	        url: "/teacher/delete/test/" + event.target.id,
+	        success: function(s) {
+	        	 console.log(s);
+		         $('#myModal').modal('hide');
+		         getTests();   	          
+	        }
+	      });
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function setMeBlue(event){
+	
+	
+	contentPlace.innerHTML = "";
+	staticContent.innerHTML = "";
+	switch (event.target.id) {
+	  case "subjects":
+		getSubjects();
+	    break;
+	  case "collections":
+		getCollections();
+	    break;
+	  case "tests":
+		getTests();
+		break;
+	}
+
+	  changeMenuItemColor(event.target.id);
+	  w3_close();
+}
+
+
+
+
+
+function changeMenuItemColor(id){
+  for (var i = 0; i < menu.length; i++) {
+    if (id == menu[i]) {
+      document.getElementById(id).className = "w3-bar-item w3-button w3-padding w3-blue";
+      document.getElementById("headerhere").innerHTML = menu[i].toUpperCase();
+    }else{
+      document.getElementById(menu[i]).className = "w3-bar-item w3-button w3-padding";
+    }
+  }
+}
+
+
+
+  function getRandomColor() {
+                  var letters = 'BCDEF'.split('');
+                  var color = '#';
+                  for (var i = 0; i < 6; i++ ) {
+                      color += letters[Math.floor(Math.random() * letters.length)];
+                  }
+                  return color;
+  }
+
+
+
+  function alphaNumOnly (e) {  // Accept only alpha numerics, no special characters 
+	    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+	    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+	    if (regex.test(str)) {
+	        return true;
+	    }
+
+	    e.preventDefault();
+	    return false;
+	}
+
+
+
+ 
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

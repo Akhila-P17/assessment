@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  
+   <link rel="shortcut icon" type="image/x-icon" href="https://cdn5.vectorstock.com/i/1000x1000/78/49/wheat-oats-logo-vector-22577849.jpg" />
+  
+
+  
+  
+  <body>
+<div class="container">
+      <form class="form-signin" >
+        
+        <p>
+          <label for="email">Email</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Email" required autofocus>
+        </p>
+        <button onclick="sendOtp()" class="btn btn-lg btn-primary btn-block" >Send OTP</button>
+      </form>
+      <br>
+      <div class="form-signin" style="text-align: center;" >
+      <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+      <button onclick="verifyOtp()" style="margin-top:10px"  class="btn btn-lg  btn-success pull-right">Verify</button>
+      </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+
+
+
+
+function sendOtp(){
+	
+	
+	
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "/generate/otp/" + document.getElementById("username").value,
+		success: function(s) {
+			
+		
+			alert(s.message);
+		}
+		
+	});
+	
+	
+}
+
+
+function verifyOtp(){
+	
+	
+	
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "/verify/otp/" + document.getElementById("otp").value,
+		success: function(s) {
+			if (s.message == "false") {
+				document.getElementById("otp").focus();
+				alert("Incorrect OTP");
+				
+			}else if(s.message == "true"){
+				submitForm();
+			}
+			
+		}
+	});
+	
+}
+
+
+</script>
+
+</body>
+</html>

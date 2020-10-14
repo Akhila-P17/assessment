@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<title>Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+
+
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+.footer {
+  position: fixed;
+  height: 50px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: grey;
+  color: white;
+  text-align: center;
+}
+
+
+.tableCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <a href="/logout" class="w3-bar-item w3-button w3-padding"><i class="fas fa-sign-out-alt"></i>  Logout</a> <span class="w3-bar-item w3-right">Admin Dashboard</span>
+</div>
+
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-top:43px;">
+
+  <!-- Header -->
+  
+
+
+
+
+
+
+
+
+  <header class="w3-container tableCenter" style="padding-top:22px">
+    <b><h5 id="headerhere">Teacher List</b></h5>
+    <br>
+  </header>
+  <div id="tableDiv"  class="tableCenter">
+  </div>
+  <br><br><br><br>
+  <header class="w3-container tableCenter" style="padding-top:22px">
+    <b><h5 id="headerhere">Students List</b></h5>
+    <br>
+  </header>
+  <div id="tableDiv1"  class="tableCenter">
+  </div>
+
+
+ <br> <br> <br> <br> <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+
+
+
+
+window.onload = getTeachers();
+
+
+
+var teacherList = [];
+var tableDiv = document.getElementById("tableDiv");
+
+
+
+
+
+
+function getTeachers(){
+
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/teacher/list",
+				success: function(s) {
+					
+					console.log(s);
+					teacherList = s;
+          			initTable();
+          			getStudents();
+
+				},
+				error: function(error){
+					cosole.log(error);
+				}
+			});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function initTable(){
+
+    var resultArray = teacherList;
+    
+		var noOfResult = resultArray.length;
+
+		if(noOfResult > 0) {
+
+			// CREATE DYNAMIC TABLE.
+			var table = document.createElement("table");
+			table.className = "w3-table-all w3-card-4 w3-hoverable ";
+			table.setAttribute('id', 'myTable');
+			table.style.width = '100%';
+			table.setAttribute('border', '1');
+			table.setAttribute('cellspacing', '0');
+			table.setAttribute('cellpadding', '5');
+
+			// retrieve column header
+
+			var col = []; // define an empty array
+			for (var i = 0; i < noOfResult; i++) {
+				for (var key in resultArray[i]) {
+					if (col.indexOf(key) === -1) {
+						col.push(key);
+					}
+				}
+			}
+
+
+
+			// CREATE TABLE HEAD .
+			var tHead = document.createElement("thead");
+
+
+
+			// CREATE ROW FOR TABLE HEAD .
+			var hRow = document.createElement("tr");
+
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < col.length; i++) {
+				    var dynamicSize = 300*(i+1);
+				    document.getElementById("tableDiv").style.maxWidth = dynamicSize + "px" ;
+					var th = document.createElement("th");
+					th.innerHTML = col[i] + "<i class='fa fa-sort' style='font-size:12px'></i>";
+					var x = i+1;
+					th.setAttribute("onclick", "w3.sortHTML('#myTable', '.item', 'td:nth-child(" + x + ")')");
+					th.setAttribute("style", "cursor:pointer");
+					hRow.appendChild(th);
+			}
+			tHead.appendChild(hRow);
+			table.appendChild(tHead);
+
+
+
+
+			// CREATE TABLE BODY .
+			var tBody = document.createElement("tbody");
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < noOfResult; i++) {
+
+					var bRow = document.createElement("tr"); // CREATE ROW FOR EACH RECORD .
+					bRow.setAttribute("class","item");
+
+
+					for (var j = 0; j < col.length; j++) {
+						var td = document.createElement("td");
+						td.innerHTML = resultArray[i][col[j]];
+						bRow.appendChild(td);
+					}
+					tBody.appendChild(bRow)
+
+			}
+			table.appendChild(tBody);
+
+
+			// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+			var divContainer = document.getElementById("tableDiv");
+			divContainer.innerHTML = "";
+			divContainer.appendChild(table);
+
+		}
+
+		
+	}
+
+
+
+var studentList = [];
+var tableDiv1 = document.getElementById("tableDiv1");
+
+
+
+
+
+
+function getStudents(){
+
+	
+
+	
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/student/list",
+				success: function(s) {
+					
+					console.log(s);
+          			studentList = s;
+          			initTable1();
+					
+
+				}
+			});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function initTable1(){
+
+    var resultArray = studentList;
+		var noOfResult = resultArray.length;
+
+		if(noOfResult > 0) {
+
+			// CREATE DYNAMIC TABLE.
+			var table = document.createElement("table");
+			table.className = "w3-table-all w3-card-4 w3-hoverable ";
+			table.setAttribute('id', 'myTable1');
+			table.style.width = '100%';
+			table.setAttribute('border', '1');
+			table.setAttribute('cellspacing', '0');
+			table.setAttribute('cellpadding', '5');
+
+			// retrieve column header
+
+			var col = []; // define an empty array
+			for (var i = 0; i < noOfResult; i++) {
+				for (var key in resultArray[i]) {
+					if (col.indexOf(key) === -1) {
+						col.push(key);
+					}
+				}
+			}
+
+
+
+			// CREATE TABLE HEAD .
+			var tHead = document.createElement("thead");
+
+
+
+			// CREATE ROW FOR TABLE HEAD .
+			var hRow = document.createElement("tr");
+
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < col.length; i++) {
+				    var dynamicSize = 300*(i+1);
+				    document.getElementById("tableDiv1").style.maxWidth = dynamicSize + "px" ;
+					var th = document.createElement("th");
+					th.innerHTML = col[i] + "<i class='fa fa-sort' style='font-size:12px'></i>";
+					var x = i+1;
+					th.setAttribute("onclick", "w3.sortHTML('#myTable1', '.item', 'td:nth-child(" + x + ")')");
+					th.setAttribute("style", "cursor:pointer");
+					hRow.appendChild(th);
+			}
+			tHead.appendChild(hRow);
+			table.appendChild(tHead);
+
+
+
+
+			// CREATE TABLE BODY .
+			var tBody = document.createElement("tbody");
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < noOfResult; i++) {
+
+					var bRow = document.createElement("tr"); // CREATE ROW FOR EACH RECORD .
+					bRow.setAttribute("class","item");
+
+
+					for (var j = 0; j < col.length; j++) {
+						var td = document.createElement("td");
+						td.innerHTML = resultArray[i][col[j]];
+						bRow.appendChild(td);
+					}
+					tBody.appendChild(bRow)
+
+			}
+			table.appendChild(tBody);
+
+
+			// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+			var divContainer = document.getElementById("tableDiv1");
+			divContainer.innerHTML = "";
+			divContainer.appendChild(table);
+
+		}
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+  
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Made with love. © 2020</p>
+  </footer>
+
+  <!-- End page content -->
+</div>
+</body>
+</html>

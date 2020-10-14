@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<title>Assesment Tool</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn5.vectorstock.com/i/1000x1000/78/49/wheat-oats-logo-vector-22577849.jpg" />
+
+
+<style>
+
+
+.footer {
+  position: fixed;
+  height: 30px;
+  color:white;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+  background-color: grey;
+  color: white;
+  text-align: center;
+}
+
+body {
+    margin-bottom:50px;
+}
+
+
+
+.tableCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+</style>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Assessment Tool</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/137409052/original/d472c30361632da1c8d8fa780f572807d78abd9f/cartoon-profile-picture-or-avatar.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      Welcome, <strong><p id = "usernamehere"></p><p id = "useridhere"></p></strong>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Dashboard</h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a id = "subjects" onclick="setMeBlue(event)"  class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-book fa-fw"></i>  Subjects</a>
+    <a id = "tests" onclick="setMeBlue(event)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-edit fa-fw"></i>  Tests</a>
+    <a id = "profile" onclick="setMeBlue(event)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user-circle fa-fw"></i>  Profile</a>
+    <a href="/logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sign-out"></i>   Logout  </a>
+  </div>
+</nav>
+
+
+
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+
+
+<!-- !PAGE CONTENT! -->
+<div  class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <b><h5 id="headerhere">Home</b></h5>
+  </header>
+  
+  
+  
+  
+
+<div id="hidden"  hidden></div><br>
+<div id="staticContent"  style="margin:10px"></div><br>
+<div id="appendhere"  class="tableCenter w3-row-padding w3-margin-bottom w3-responsive"></div>
+<datalist id="subjectCodes"></datalist>
+
+
+
+
+
+
+
+
+
+  <!-- End page content -->
+</div>
+  <!-- Footer -->
+  <footer class="footer">
+      <div class="container">
+        <span class="text-muted" style="color:white">Made with love. © 2020</span>
+      </div>
+  </footer>
+<script>
+
+
+
+
+
+
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+
+
+
+window.onload = getStudentDetails();
+
+
+
+var subjectList = [];
+var studentList = [];
+var questionList = [];
+var setUsername = document.getElementById("usernamehere").innerHTML;
+var setUserId = document.getElementById("useridhere").innerHTML;
+var setHeader = document.getElementById("headerhere").innerHTML;
+var staticContent = document.getElementById("staticContent");
+var contentPlace = document.getElementById("appendhere");
+var tableDiv = document.getElementById("tableDiv");
+var menu = ["subjects", "tests", "profile"];
+
+
+
+
+// student details....................................................................................................................
+
+function getStudentDetails(){
+	
+	$.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/student/details",
+        success: function(s) {
+
+          document.getElementById("useridhere").innerHTML = s.usn;
+          document.getElementById("usernamehere").innerHTML = s.name;
+          getSubjects();
+          console.log(s);
+
+        }
+      });
+		
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//student subjects menu....................................................................................................................
+
+
+
+
+
+function getSubjects(){
+
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/student/subject/list",
+        success: function(s) {
+          subjectList = s;
+          displaySubjects();
+          console.log(s);
+
+        }
+      });
+      
+      
+      document.getElementById("staticContent").innerHTML =
+    	  '<div class="form-inline" style="margin-left:5px;"> '+
+    	  '<div class="form-group">'+
+    	  '<label for="newSubject" style="margin-left:5px;" >Subject Name:</label>'+
+    	  '<input type="text" list="subjectCodes"  class="form-control" id="newSubject" style="margin-right:10px;" >'+
+    	  '</div>'+
+    	  '<button onclick="addSubject()" class="btn btn-default" style="margin-left:10px;" ><i class="fa fa-plus" ></i> Add</button></div>';
+
+      initOptions();
+}
+  
+  
+  
+  
+function displaySubjects(){
+
+	
+	contentPlace.innerHTML = "";	
+	for (var i = 0; i < subjectList.length; i++) {
+
+	  contentPlace.innerHTML += ' <div  class="w3-quarter w3-hover-sepia"  >'+ 
+	                      '  <div class="w3-container w3-padding-16"  style="margin-top: 16px;background-color: lightblue;"> ' +
+	                      ' <div class="w3-right"><i class="fa fa-trash" style="color:red" onclick="deleteSubject(' + "'" + subjectList[i].id  + "'" + ')" ></i></div> ' +
+	                      '  <i class="fa fa-book" ></i>  ' +
+	                      '  <h4 onclick="getStudents(' + "'"  + subjectList[i].id + "'" + ')"> ' + subjectList[i].name + '</h4> ' + 
+	                      ' </div></div> ';
+
+	  }
+	  
+	  w3-close();
+
+
+	}
+
+
+
+
+
+function getStudents(subjectId){
+
+	
+	document.getElementById("headerhere").innerHTML = "Students List For Subject_Id : " + subjectId ;
+	console.log(subjectId);
+	
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/student/subject/" +  subjectId +   "/student/list",
+				success: function(s) {
+					
+					console.log(s);
+          			studentList = s.studentsList;
+          			initTable(subjectId);
+					
+
+				}
+			});
+	}
+
+
+
+
+
+function initTable(id){
+	
+	contentPlace.innerHTML =   '<div id="tableDiv"  class="tableCenter"><div id="resultArray" class="table-responsive" ></div></div>';
+
+
+    var resultArray = studentList;
+
+		var noOfResult = resultArray.length;
+
+		if(noOfResult > 0) {
+
+			// CREATE DYNAMIC TABLE.
+			var table = document.createElement("table");
+			table.className = "table table-striped table-hover table-condensed";
+			table.setAttribute('id', 'myTable');
+			table.style.width = '100%';
+			table.setAttribute('border', '1');
+			table.setAttribute('background-color', 'white');
+			table.setAttribute('cellspacing', '0');
+			table.setAttribute('cellpadding', '5');
+
+			// retrieve column header
+
+			var col = []; // define an empty array
+			for (var i = 0; i < noOfResult; i++) {
+				for (var key in resultArray[i]) {
+					if (col.indexOf(key) === -1) {
+						col.push(key);
+					}
+				}
+			}
+
+
+
+			// CREATE TABLE HEAD .
+			var tHead = document.createElement("thead");
+
+
+
+			// CREATE ROW FOR TABLE HEAD .
+			var hRow = document.createElement("tr");
+
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < col.length; i++) {
+				    var dynamicSize = 300*(i+1);
+				    document.getElementById("tableDiv").style.maxWidth = dynamicSize + "px" ;
+					var th = document.createElement("th");
+					th.innerHTML = col[i] + "<i class='fa fa-sort' style='font-size:12px'></i>";
+					var x = i+1;
+					th.setAttribute("onclick", "w3.sortHTML('#myTable', '.item', 'td:nth-child(" + x + ")')");
+					th.setAttribute("style", "cursor:pointer");
+					hRow.appendChild(th);
+			}
+			tHead.appendChild(hRow);
+			table.appendChild(tHead);
+
+
+
+
+			// CREATE TABLE BODY .
+			var tBody = document.createElement("tbody");
+
+			// ADD COLUMN HEADER TO ROW OF TABLE HEAD.
+			for (var i = 0; i < noOfResult; i++) {
+
+					var bRow = document.createElement("tr"); // CREATE ROW FOR EACH RECORD .
+					bRow.setAttribute("class","item");
+
+					for (var j = 0; j < col.length; j++) {
+						var td = document.createElement("td");
+						td.innerHTML = resultArray[i][col[j]];
+						bRow.appendChild(td);
+					}
+					tBody.appendChild(bRow)
+
+			}
+			table.appendChild(tBody);
+
+
+			// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+			var divContainer = document.getElementById("tableDiv");
+			divContainer.innerHTML = "";
+			divContainer.appendChild(table);
+
+		}
+		
+    w3_close();
+
+	}
+	
+	
+	
+	
+	
+
+function addSubject(){
+	
+	var newSubject = {"id": document.getElementById("newSubject").value};
+	
+	$.ajax({
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(newSubject),
+        dataType: "json",
+        url: "/student/add/subject",
+        success: function(s) {
+          alert(s.status);
+          console.log(s);
+          getSubjects();
+        }
+      });
+	
+}
+
+
+
+	
+function deleteSubject(id){
+	
+	var r = confirm("Are you sure?");
+	if ( r ) {
+		
+		$.ajax({
+			type: "DELETE",
+			dataType: "json",
+			url: "/student/delete/subject/" +  id,
+			success: function(s) {
+	  			getSubjects();
+
+			}
+		});
+	  }
+}
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//student Test interface....................................................................................................................
+
+
+var tests = [];
+
+function getTests(){
+	
+	console.log("got into test");
+	
+	staticContent.innerHTML = "";
+	
+		$.ajax({
+	        type: "GET",
+	        dataType: "json",
+	        url: "/student/test/list",
+	        success: function(s) {
+	          tests = s;
+	          contentPlace.innerHTML = "";	
+	          
+	  			var str = "";
+				str =
+					'<div class="container"><div class="panel-group" id="accordion">';
+				    
+				for (var i = 0; i < s.length; i++) {
+					str += 
+						'<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title">'+
+				        '<a  data-toggle="collapse" data-parent="#accordion" href="#collapse' + s[i].testCode + '">' + s[i].testName + '</a></h4></div>' +
+				        '<div id="collapse' + s[i].testCode + '" class="panel-collapse collapse">';
+				        
+					str +=
+						
+						'<div style="padding:10px" ><p>Collection Code : ' + s[i].collectionCode    + '</p>'+
+						'<p>Subject Code : ' + s[i].subjectCode    + '</p>'+
+						'<p>Total number of Question : ' + s[i].totalQuestions    + '</p>'+
+						'<p>Marks for correct answers : ' + s[i].marksFcaq    + '</p>'+
+						'<p>Marks for wrong answers : ' + s[i].marksFwap    + '</p>'+
+						'<p>Total marks : ' + s[i].totalMarks    + '</p>'+
+						'<p>Start date : ' + s[i].startDate    + '</p>'+
+						'<p>Satrt Time : ' + s[i].startTime    + '</p>'+
+						'<p>End Time : ' + s[i].endTime    + '</p>'+
+						'<p>Test Status : ' + s[i].testStatus    + '</p></div>'+
+						'</div></div>';
+				}
+				str += '</div></div>';
+				
+				contentPlace.innerHTML = str;
+
+	          console.log(s);
+
+	        }
+	      });
+	      
+		  w3-close();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// filling options for subjects.......................................................
+
+
+function initOptions(){
+	
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "/all/teacher/subject/list",
+		success: function(s) {
+			
+			console.log(s);	
+			
+			var str=''; 
+			subjectCodes = s;
+			for (var i=0; i < s.length; ++i){
+				console.log(s[i].id);
+			str += '<option value="'+s[i].id +'" />';
+			console.log(str);
+			}
+
+			var options = document.getElementById("subjectCodes").innerHTML = str;
+			
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+function setMeBlue(event){
+	
+	
+	contentPlace.innerHTML = "";
+	staticContent.innerHTML = "";
+	switch (event.target.id) {
+	  case "subjects":
+		getSubjects();
+	    break;
+	  case "tests":
+		getTests();
+		break;
+	}
+
+	  changeMenuItemColor(event.target.id);
+	  w3_close();
+}
+
+
+
+
+
+function changeMenuItemColor(id){
+  for (var i = 0; i < menu.length; i++) {
+    if (id == menu[i]) {
+      document.getElementById(id).className = "w3-bar-item w3-button w3-padding w3-blue";
+      document.getElementById("headerhere").innerHTML = menu[i].toUpperCase();
+    }else{
+      document.getElementById(menu[i]).className = "w3-bar-item w3-button w3-padding";
+    }
+  }
+}
+
+
+
+  function getRandomColor() {
+                  var letters = 'BCDEF'.split('');
+                  var color = '#';
+                  for (var i = 0; i < 6; i++ ) {
+                      color += letters[Math.floor(Math.random() * letters.length)];
+                  }
+                  return color;
+  }
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+.w3-button-mod{
+width:50px;
+padding:2px;
+text-size:20px;
+color:black;
+}
+
+
+.question{
+margin:4px;
+background-color:lavender;
+border: 1px solid black;
+border-radius:5px;
+padding-top:10px;
+padding-bottom:30px;
+padding-left:10px;
+padding-right:7px;
+}
+
+</style>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Logo</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <span>Hello <strong>Mikey </strong></span><br>
+    </div>
+  </div>
+  <hr>
+
+
+  <div class="w3-bar-block">
+  <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+  </div>
+
+
+
+<div style="margin-left:7px">
+	  <h4 style="margin-left:7px" >Questions</h4>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-green w3-border w3-border-red">0</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-red">2342</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+23</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-green w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+23</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-green w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-green w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-green w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+	  <button style="margin:7px" class="w3-button-mod w3-round  w3-border w3-border-black">+</button>
+</div>
+
+</nav>
+
+
+
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+
+
+
+
+
+
+
+
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<br>
+
+
+
+	  <div class="question">
+Question 1 : <br><br>
+What is your gender?
+<hr>
+<input type="radio" id="male" name="gender" value="male">
+<label for="male">These days JavaScript is the foundation of very new technologies, Front-End frameworks, etc. One of these days JavaScript is the foundation of very new technologies, Front-End frameworks, etc. One of the</label><br>
+<br><input type="radio" id="female" name="gender" value="female">
+<label for="female">Female</label><br>
+<br><input type="radio" id="other" name="gender" value="other">
+<label for="other">Other</label>
+
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+
+
+<script >
+
+
+var myRadios = document.getElementsByName('opt');
+var setCheck;
+var x = 0;
+for(x = 0; x < myRadios.length; x++){
+
+    myRadios[x].onclick = function(){
+        if(setCheck != this){
+             setCheck = this;
+        }else{
+            this.checked = false;
+            setCheck = null;
+    }
+    };
+}
+
+</script>
+
+
+</body>
+</html>
